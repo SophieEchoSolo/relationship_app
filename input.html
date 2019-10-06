@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>New information</title>
+  </head>
+  <body>
+
+    <form action="http://54.180.122.197:58386/newpeople" method="post">
+      <p>Input new person</p>
+        Name: <input type="text" name="new_name"><br>
+              <input type="submit" value="Submit">
+    </form>
+
+    <form action="http://54.180.122.197:58386/newrelationship" method="post">
+      <p>Input new relationship information</p>
+      Type id: <input type="text" name="type_id"><br>
+      Person id 1: <input type="text" name="people_a_id">Choose color:<input type="color" name="node_color1" value=""><br>
+      Person id 2: <input type="text" name="people_b_id">Choose color:<input type="color" name="node_color2" value=""><br>
+      <input type="submit" value="Submit">
+
+    </form>
+
+    <form action="http://54.180.122.197:58386/newtype" method="post">
+      <p>Input new relationship information</p>
+      Realtionship type: <input type="text" name="r_type"><br>
+      Line color: <input type="color" name="line_color" value=""><br>
+      Line style: <select name="line_style">
+        <option value="Solid">Solid</option>
+        <option value="Dashed">Dashed</option>
+        <option value="Dotted">Dotted</option>
+      </select><br>
+      <input type="submit" value="Submit">
+    </form>
+
+    <form action="http://54.180.122.197:58386/deleterelationship" method="post">
+      <p>Delete relationship</p>
+        Person A: <input type="text" name="people_a_id"><br>
+        Person B: <input type="text" name="people_b_id"><br>
+              <input type="submit" value="Submit">
+    </form>
+
+    <form action="http://54.180.122.197:58386/deleteperson" method="post">
+      <p>Delete person</p>
+        Person's ID: <input type="text" name="id"><br>
+              <input type="submit" value="Submit">
+    </form>
+
+  </body>
+</html>
