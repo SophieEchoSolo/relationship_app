@@ -16,12 +16,97 @@ try:
 		sql = """SELECT * FROM people"""
 		cursor.execute(sql)
 		result = cursor.fetchall()
-		print(result)
+		# print(result)
 finally:
 	pass
 
 app = Flask(__name__)
 cors = CORS(app)
+
+# How do I get the data from /newtypes to be inserted into the types table?
+@app.route('/newtype', methods=['POST'])
+def posttypes():
+	data = request.form.to_dict(flat=True)
+	print(data)
+	# try:
+	with connection.cursor() as cursor:
+		sql = """INSERT INTO types (name, line_color, line_style) VALUES (%s, %s, %s)"""
+		val = (data["r_type"], data["line_color"][-6:], data["line_style"])
+		cursor.execute(sql, val)
+		connection.commit()
+		cursor.close()
+	with connection.cursor() as cursor:
+		sql = """SELECT * FROM types"""
+		cursor.execute(sql)
+		result = cursor.fetchall()
+		return json.dumps(result)
+	# except Exception as e: print(e)
+	# return "other poop"
+	
+@app.route('/newpeople', methods=['POST'])
+def postpeople():
+	data = request.form.to_dict(flat=True)
+	print(data)
+	with connection.cursor() as cursor:
+		sql = """INSERT INTO people (name) VALUES (%s)"""
+		val = (data["new_name"],)
+		cursor.execute(sql, val)
+		connection.commit()
+		cursor.close()
+	with connection.cursor() as cursor:
+		sql = """SELECT * FROM people"""
+		cursor.execute(sql)
+		result = cursor.fetchall()
+		return json.dumps(result)
+
+
+@app.route('/newrelationship', methods=['POST'])
+def postrelationship():
+	data = request.form.to_dict(flat=True)
+	print(data)
+	with connection.cursor() as cursor:
+		sql = """INSERT INTO relationships (type_id, people_a_id, people_b_id) VALUES (%s, %s, %s) ON DUPLICATE KEY UPDATE type_id=%s"""
+		val = (data["type_id"], data["people_a_id"], data["people_b_id"], data["type_id"])
+		cursor.execute(sql, val)
+		connection.commit()
+		cursor.close()
+	with connection.cursor() as cursor:
+		sql = """SELECT * FROM relationships"""
+		cursor.execute(sql)
+		result = cursor.fetchall()
+		return json.dumps(result)
+	
+@app.route('/deleterelationship', methods=['POST'])
+def deleterelationship():
+	data = request.form.to_dict(flat=True)
+	print(data)
+	with connection.cursor() as cursor:
+		sql = """DELETE FROM relationships WHERE people_a_id = %s && people_b_id = %s"""
+		val = (data["people_a_id"], data["people_b_id"])
+		cursor.execute(sql, val)
+		connection.commit()
+		cursor.close()
+	with connection.cursor() as cursor:
+		sql = """SELECT * FROM relationships"""
+		cursor.execute(sql)
+		result = cursor.fetchall()
+		return json.dumps(result)
+	
+@app.route('/deleteperson', methods=['POST'])
+def deleteperson():
+	data = request.form.to_dict(flat=True)
+	print(data)
+	with connection.cursor() as cursor:
+		sql = """DELETE FROM people WHERE id = %s"""
+		val = (data["id"])
+		cursor.execute(sql, val)
+		connection.commit()
+		cursor.close()
+	with connection.cursor() as cursor:
+		sql = """SELECT * FROM people"""
+		cursor.execute(sql)
+		result = cursor.fetchall()
+		return json.dumps(result)
 
 @app.route('/nodes')
 def getnodes():
