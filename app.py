@@ -41,7 +41,6 @@ def posttypes():
 		result = cursor.fetchall()
 		return json.dumps(result)
 	# except Exception as e: print(e)
-	# return "other poop"
 	
 @app.route('/newpeople', methods=['POST'])
 def postpeople():
